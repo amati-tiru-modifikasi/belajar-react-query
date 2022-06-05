@@ -6,15 +6,28 @@ import axios from "axios";
 function App() {
   return (
     <div>
-      <Pokemon queryKey="pokemon1" />
-      <br />
-      <Pokemon queryKey="pokemon2" />
+      <Count />
+      <Pokemon />
     </div>
   )
 }
 
-function Pokemon({ queryKey }) {
-  const queryInfo = useQuery(queryKey, async () => {
+function usePokemon() {
+  return useQuery("pokemon", async () => {
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    return axios
+      .get("https://pokeapi.co/api/v2/pokemon")
+      .then((res) => res.data.results)
+    });
+}
+
+function Count() {
+  const queryInfo = usePokemon()
+  return <h3>Your ar looking at {queryInfo.data?.length} pokemon</h3>
+}
+
+function Pokemon() {
+  const queryInfo = useQuery("pokemon", async () => {
     await new Promise(resolve => setTimeout(resolve, 1000))
     return axios
       .get("https://pokeapi.co/api/v2/pokemon")
