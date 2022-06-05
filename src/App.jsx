@@ -10,7 +10,7 @@ function App() {
       .get("https://pokeapi.co/api/v2/pokemon")
       .then((res) => res.data.results)
     }, {
-      staleTime: Infinity // 5000
+      cacheTime: 5000
     });
 
   return queryInfo.isLoading ? (
