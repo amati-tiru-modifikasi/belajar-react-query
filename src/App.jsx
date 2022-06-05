@@ -4,13 +4,21 @@ import axios from "axios";
 
 
 function App() {
-  const queryInfo = useQuery("pokemon", async () => {
+  return (
+    <div>
+      <Pokemon queryKey="pokemon1" />
+      <br />
+      <Pokemon queryKey="pokemon2" />
+    </div>
+  )
+}
+
+function Pokemon({ queryKey }) {
+  const queryInfo = useQuery(queryKey, async () => {
     await new Promise(resolve => setTimeout(resolve, 1000))
     return axios
       .get("https://pokeapi.co/api/v2/pokemon")
       .then((res) => res.data.results)
-    }, {
-      cacheTime: 5000
     });
 
   return queryInfo.isLoading ? (
