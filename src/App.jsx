@@ -1,24 +1,24 @@
-import React from 'react'
-import { useQuery  } from 'react-query'
-import axios from 'axios'
+import React from "react";
+import { useQuery } from "react-query";
+import axios from "axios";
 
 function App() {
-  const queryInfo = useQuery('pokemon',() => 
-    axios
-      .get('https://pokeapi.co/api/v2/pokemon')
-      .then(res => res.data.results)
-  )
-  console.log(queryInfo);
+  const queryInfo = useQuery("pokemon", async () => {
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    return axios
+      .get("https://pokeapi.co/api/v2/pokemon")
+      .then((res) => res.data.results)
+    });
 
-  return (
-    <div className="App">
-      {queryInfo.data?.map(result => {
-        return <div key={result.name}>
-          {result.name}
-        </div>
+  return queryInfo.isLoading ? (
+    "Loading..."
+  ) : (
+    <div>
+      {queryInfo.data?.map((result) => {
+        return <div key={result.name}>{result.name}</div>;
       })}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
